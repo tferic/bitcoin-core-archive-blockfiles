@@ -5,10 +5,11 @@
 # with limited space.
 # The script will create symlinks linking from the main disk to 
 # the archive disk, in a way that the bitcoin-core software will still
-# be able the archived files, maintaining the status of a bitcoin full node.
+# be able to access the archived files, maintaining the status of 
+# a bitcoin full node.
 
-# For the time being, this script is meant to run only while the bitcoin-core 
-# software is stopped.
+# For the time being, this script is meant to run only while the  
+# bitcoin-core software is stopped.
 
 # This software is opensource, published under the MIT terms of license
 # https://opensource.org/licenses/MIT
