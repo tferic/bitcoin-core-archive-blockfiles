@@ -23,9 +23,9 @@ BITCOIN_CORE_DIR='/home/bitcoin/.bitcoin'
 # Archive directory (mounted on another disk)
 ARCHIVE_DIR='/local/bitcoin/.bitcoin/blocks'
 # Maximum disk usage of archive disk (Use% in df)
-PERC_MAX_DISKUSAGE_ARCHIVE='97'
+PERC_MAX_DISKUSAGE_ARCHIVE=97
 # How many blk files should be retained within the bitcoin-core main directory (prefer newest)
-RETAIN_LATEST_BLK_VERSIONS=995
+RETAIN_LATEST_BLK_VERSIONS=1000
 # Path of rsync program
 BIN_RSYNC='/usr/bin/rsync'
 
@@ -39,6 +39,7 @@ function dt () {
 	# Return formatted date/time stamp
 	date +'%Y-%m-%d %H:%M:%S   '
 }
+
 function get_diskusage_archive () {
 	# Returns disk usage of archive disk as percent number
 	# Pass archive directory as argument
@@ -189,6 +190,7 @@ function replace_file_with_symlink () {
 	fi
 }
 
+# MAIN section
 verify_allowed_to_execute
 process_archivable_files "$BITCOIN_DIR_BLOCKS" "$ARCHIVEABLE_STUB_PATTERN" "$ARCHIVE_DIR" "$RETAIN_LATEST_BLK_VERSIONS"
 
