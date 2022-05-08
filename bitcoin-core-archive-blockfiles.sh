@@ -16,29 +16,38 @@
 
 # Written by Toni Feric, 2022
 
-VERSION="0.01"
+VERSION="0.02"
 
 # Block of variables that are user modifiable
+
 # Main Working directory of bitcoin-core, where it is storing its data
-BITCOIN_CORE_DIR='/home/bitcoin/.bitcoin'
+BITCOIN_CORE_DATA_DIR='/home/bitcoin/.bitcoin'
+
 # Archive directory (mounted on another disk)
 ARCHIVE_DIR='/local/bitcoin/.bitcoin/blocks'
+
 # Maximum disk usage of archive disk (Use% in df)
 PERC_MAX_DISKUSAGE_ARCHIVE=97
+
 # How many blk files should be retained within the bitcoin-core main directory (prefer newest)
 RETAIN_LATEST_BLK_VERSIONS=1000
+
 # Path of rsync program
 BIN_RSYNC='/usr/bin/rsync'
 
+# Date/Time format for log output
+DATE_TIME_FORMAT='%Y-%m-%d %H:%M:%S'
+
+
 # internal-only variables. No need for users to modify.
-BITCOIN_DIR_BLOCKS="$BITCOIN_CORE_DIR/blocks"
+BITCOIN_BLOCKS_DIR="$BITCOIN_CORE_DATA_DIR/blocks"
 ARCHIVEABLE_STUB='blk'
 ARCHIVEABLE_STUB_PATTERN="${ARCHIVEABLE_STUB}*.dat"
 sN="`basename $0`"
 
 function dt () {
 	# Return formatted date/time stamp
-	date +'%Y-%m-%d %H:%M:%S   '
+	date +"$DATE_TIME_FORMAT"'   '
 }
 
 function get_diskusage_archive () {
@@ -75,10 +84,17 @@ function check_bitcoin_running () {
 function verify_allowed_to_execute () {
 	# Verify if this script is allowed to execute
 
+	# Exit if another instance of this script is already running
+	if pidof -x $sN -o %PPID > /dev/null
+	then
+		echo "`dt`ERROR: Another instance of this script is already running. Only one instance is allowed to run. Exiting."
+		exit 1
+	fi
+
 	# Exit if bitcoin-core is still running. This script must operate while bitcoin-core is stopped.
 	if `check_bitcoin_running` ; then
-		echo "`dt`ERROR: bitcoin-core is still running. Exiting."
-		echo "`dt`ERROR: In order for this script to run, it must be stopped."
+		echo "`dt`ERROR: bitcoin-core is still running."
+		echo "`dt`ERROR: To run this script, please stop bitcoin-core first. Exiting."
 		exit 1
 	fi
 	
@@ -90,7 +106,7 @@ function verify_allowed_to_execute () {
 	fi
 	
 	# Exit if the blk file count in the main directory is lower than the threshold
-	local realfiles_count=`get_list_matching_realfiles "$BITCOIN_DIR_BLOCKS" "$ARCHIVEABLE_STUB_PATTERN" | wc -l`
+	local realfiles_count=`get_list_matching_realfiles "$BITCOIN_BLOCKS_DIR" "$ARCHIVEABLE_STUB_PATTERN" | wc -l`
 	if [ $realfiles_count -le "$RETAIN_LATEST_BLK_VERSIONS" ] ; then
 		echo "`dt`INFO: Nothing to do. Number of real blk files ($realfiles_count) not above threshold ($RETAIN_LATEST_BLK_VERSIONS)."
 		exit 1
@@ -177,7 +193,7 @@ function replace_file_with_symlink () {
 	local srcdir=`dirname "$f"`
 	local srcfile=`basename "$f"`
 	local destfile="$destdir/$srcfile"
-	if [ -f $f ] ; then
+	if [ -f $destfile ] ; then
 		( cd $srcdir && rm -f $f && ln -s $destfile )
 		if [ -h $f ] ; then
 			return 0
@@ -193,6 +209,6 @@ function replace_file_with_symlink () {
 
 # MAIN section
 verify_allowed_to_execute
-process_archivable_files "$BITCOIN_DIR_BLOCKS" "$ARCHIVEABLE_STUB_PATTERN" "$ARCHIVE_DIR" "$RETAIN_LATEST_BLK_VERSIONS"
+process_archivable_files "$BITCOIN_BLOCKS_DIR" "$ARCHIVEABLE_STUB_PATTERN" "$ARCHIVE_DIR" "$RETAIN_LATEST_BLK_VERSIONS"
 
 
