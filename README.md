@@ -19,7 +19,7 @@ The other storage medium could be a magnetic disk, or external USB disk, or netw
 
 ### Variables to adjust
 ```
-BITCOIN_CORE_DIR
+BITCOIN_CORE_DATA_DIR
 ```
 Specify the directory (full path), which is used by the bitcoin-core software. It would typically be on the small/fast local disk.
 ```
@@ -38,6 +38,10 @@ Keep this number of bitcoin block files (`blk*.dat`) on the main/fast/small disk
 BIN_RSYNC
 ```
 Path of your `rsync` program. If it is not alread installed, install it by using `yum install rsync` or `apt install rsync`. Use `which rsync` to get the correct full path, and add it to this variable.  
+```
+DATE_TIME_FORMAT
+```
+Specify your preferred date/time format as described in `man date`.
 
 
 ## Requirements
