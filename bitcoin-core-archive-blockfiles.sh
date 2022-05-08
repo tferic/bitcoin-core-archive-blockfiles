@@ -164,7 +164,7 @@ function process_archivable_files () {
 			copy_to_archive "$file" "$archdir"
 		else
 			echo "`dt`ERROR:    Not enough disk space on $archdir. (Threshold=${PERC_MAX_DISKUSAGE_ARCHIVE}%). Aboring script execution. Exiting."
-			df -Ph "$ARCHIVE_DIR" | egrep 'Use%|[0-9][0-9]%' | awk -v time="`dt`" '{print time"       "$0}'
+			df -Ph "$archdir" | egrep 'Use%|[0-9][0-9]%' | awk -v time="`dt`" '{print time"       "$0}'
 			exit 1
 		fi
 		echo "`dt`INFO:     Creating symlink for file $file"
