@@ -16,7 +16,7 @@
 
 # Written by Toni Feric, 2022
 
-VERSION="0.02"
+VERSION="0.03"
 
 # Block of variables that are user modifiable
 
@@ -54,7 +54,7 @@ function get_diskusage_archive () {
 	# Returns disk usage of archive disk as percent number
 	# Pass archive directory as argument
 	# Return disk usage 
-	df $1 | awk '{print $(NF-1)}' | egrep '[0-9][0-9]%' | head -1 | sed 's/%//g'
+	df $1 | awk '{print $(NF-1)}' | egrep '[0-9][0-9]*%' | head -1 | sed 's/%//g'
 }
 
 function check_diskusage_archive () {
