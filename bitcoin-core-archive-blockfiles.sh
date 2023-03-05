@@ -16,7 +16,7 @@
 
 # Written by Toni Feric, 2022
 
-VERSION="0.03"
+VERSION="0.04"
 
 # Block of variables that are user modifiable
 
@@ -71,7 +71,7 @@ function check_diskusage_archive () {
 function check_bitcoin_running () {
 	# Check if bitcoin-core is running
 	# Return Boolean
-	local bitcoin_procs="`ps -eo cmd | egrep -v "$sN|grep" | egrep 'bitcoin-core|bitcoin-qt' | wc -l`"
+	local bitcoin_procs="`ps -eo cmd | egrep -v "$sN|grep" | egrep 'bitcoin-core|bitcoin-qt|bitcoind' | wc -l`"
 	if [ "$bitcoin_procs" -gt 0 ] ; then
 		# Found bitcoin processes running (Return True)
 		return 0
