@@ -11,11 +11,12 @@ It tries to address the following problem:
 The other storage medium could be a magnetic disk, or external USB disk, or network attached volume (NFS, Synology, etc.), for example.  
 
 ## How to use
-1. Copy this script to the computer that runs bitcoin-core.
-2. Edit the local copy of the script in an editor, and adjust the customizable variables to your own needs.
-3. Stop the bitcoin-core software
-4. Run the script either manually, or scheduled via cron. (you may want to capture the output into a log file)
-5. Start the bitcoin-core software
+1. Make sure Bitcoin Core is installed directly on OS (not docker, snaps, etc)
+2. Copy this script to the computer that runs bitcoin-core.
+3. Edit the local copy of the script in an editor, and adjust the customizable variables to your own needs.
+4. Stop the bitcoin-core software
+5. Run the script either manually, or scheduled via cron. (you may want to capture the output into a log file)
+6. Start the bitcoin-core software
 
 ### Variables to adjust
 ```
@@ -45,5 +46,6 @@ Specify your preferred date/time format as described in `man date`.
 
 
 ## Requirements
+- Bitcoin Core software installation directly on OS (not docker, snaps etc). Does not work with Umbrel.
 - Computer with two data volumes, a small/fast one, and a large one
 - `rsync` must be installed
